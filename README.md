@@ -5,7 +5,7 @@
 1. General:
     - This repository content is related to my Final Graduation Paper
     - Course: Bachelor Degree in Aeronautical Engineering at Sao Paulo State University-"Júlio de Mesquita Filho" (UNESP)
-    - Paper Title: "Sistema de Planejamento de Voo Autônomo Utilizando Inteligência Artificial" (PT-BR) | "Autonomous flight planning system using artificial intelligence" (US-EN)
+    - Paper Title: "Sistema de Planejamento de Voo Autônomo Utilizando Inteligência Artificial" (PT-BR) | "Autonomous Flight Planning System Using Artificial Intelligence" (US-EN)
 
 2. Architecture and Objective:
 The general objective of the work is to create an integrated system for mission planning of
