@@ -1,3 +1,7 @@
+[<img src="logo_unesp.jpg" align="right" width="300" heigth="300">]
+
+[![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
+
 # 🧠 About TCC ✈
 
 - This repository content is related to my Final Graduation Paper
