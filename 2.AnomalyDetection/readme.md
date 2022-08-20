@@ -1,0 +1,1 @@
+# ~ Use of Artificial Neural Network for anomaly detection over a timeseries database ~

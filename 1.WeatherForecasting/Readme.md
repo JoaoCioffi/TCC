@@ -1,4 +1,4 @@
-# Predictive System Using Metar Data (SBJS)
+# Predictive System Using Metar Data (SBRP)
 
 > **Main database:**  https://mesonet.agron.iastate.edu/request/download.phtml?network=BR__ASOS
 
