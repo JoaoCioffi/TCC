@@ -3,7 +3,7 @@
 # 🧠 About TCC ✈
 
 1. General:
-    - This repository content is related to my Final Graduation Paper
+    - This repository content is related to my Graduation's Final Paper
     - Course: Bachelor Degree in Aeronautical Engineering at Sao Paulo State University-"Júlio de Mesquita Filho" (UNESP)
     - Paper Title: "Sistema de Planejamento de Voo Autônomo Utilizando Inteligência Artificial" (PT-BR) | "Autonomous Flight Planning System Using Artificial Intelligence" (US-EN)
 
