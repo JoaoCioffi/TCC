@@ -2,6 +2,22 @@
 
 # 🧠 About TCC ✈
 
-- This repository content is related to my Final Graduation Paper
-- Course: Bachelor Degree in Aeronautical Engineer at Sao Paulo State University-"Júlio de Mesquita Filho" (UNESP)
-- Paper Title: "Sistema de Planejamento de Voo Autônomo Utilizando Inteligência Artificial" (PT-BR) | "Autonomous flight planning system using artificial intelligence" (US-EN)
+1. General:
+    - This repository content is related to my Final Graduation Paper
+    - Course: Bachelor Degree in Aeronautical Engineer at Sao Paulo State University-"Júlio de Mesquita Filho" (UNESP)
+    - Paper Title: "Sistema de Planejamento de Voo Autônomo Utilizando Inteligência Artificial" (PT-BR) | "Autonomous flight planning system using artificial intelligence" (US-EN)
+
+2. Architecture and Objective:
+The general objective of the work is to create an integrated system for mission planning of
+an autonomous aerial vehicle, from the pre-flight to real-time decision making. This goal
+can be specifically extended as follows:
+    - **First module of the architecture:** Implementation of supervised learning (regression multiple) for forecasting weather data at least 1 hour before the flight. In case the
+    conditions are right, the decision to execute the mission will rest with the mission operator.
+    - **Anomaly detection module:** use of artificial neural networks to understand the
+    flight data (time dependence between variables) and identification of anomalous patterns. Case
+    a dataset is within a faulty time interval, the real-time decision will be
+    made according to the levels of these behavioral patterns.
+    - **Classification module in sublevels:** use of unsupervised learning for the
+    proper grouping (clustering) of previously identified incorrect patterns. In this
+    step, the system should be able to subdivide into 3 large groups (or levels): lightweight categories,
+    moderate and critical of the anomalies.
