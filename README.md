@@ -1,5 +1,7 @@
 [![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
 
+![image](https://user-images.githubusercontent.com/60454486/185803548-88251d7a-32cc-47c8-b360-3ab168f33fba.png)
+
 # 🧠 About TCC ✈
 
 1. General:
@@ -20,5 +22,3 @@ can be specifically extended as follows:
     proper grouping (clustering) of previously identified incorrect patterns. In this
     step, the system should be able to subdivide into 3 large groups (or levels): lightweight categories,
     moderate and critical levels of these anomalies.
-    
-![image](https://user-images.githubusercontent.com/60454486/185803548-88251d7a-32cc-47c8-b360-3ab168f33fba.png)
