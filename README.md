@@ -1,6 +1,6 @@
 [![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
 
-![image](https://user-images.githubusercontent.com/60454486/185804155-cc99d1fa-deb7-4976-ac95-2c9fdc3a0b8e.png)
+![image](https://user-images.githubusercontent.com/60454486/185804290-4fe85fe0-c7c9-4297-8c6f-d38c8901bebb.png)
 
 # 🧠 About TCC ✈
 
