@@ -10,5 +10,3 @@ def clusters(filename='clusters.joblib',path=filesPath):
     clusteringAlg = joblib.load(filename)
     os.chdir(absPath)
     return clusteringAlg
-
-print(clusters())
