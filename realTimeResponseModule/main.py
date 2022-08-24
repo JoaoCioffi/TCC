@@ -1,6 +1,7 @@
 # Main libraries
 import anomalyDetection,clustering,loadData
 import numpy as np
+import colorama;colorama.init(autoreset=True)
 from colorama import Fore, Back, Style
 import time
 
@@ -33,7 +34,7 @@ print(f'\n>> Input data for validation:\n{testData.head()}\n')
 # checking for anomalies:
 time.sleep(1)
 print('\n>> Starting anomaly detection...')
-time.sleep(1)
+time.sleep(2)
 
 anomalyDetectionInput = testData[['rollRate','pitchRate','yawRate']].values
 print('\nValues:')
@@ -45,13 +46,15 @@ for r in range(anomalyDetectionInput.shape[0]): #rows
     inputArray = np.array([[rollRate,pitchRate,yawRate]])
     print(f'\n* rollRate:{rollRate}\n* pitchRate:{pitchRate}\n* yawRate:{yawRate}\n')
 
-    anomalyResult = module1.predict(inputArray)
-    print(anomalyResult)
+    def checkValues(inputArray=inputArray):
+        anomalyResult = module1.predict(inputArray)
+        if anomalyResult[0] == 0:
+            print(Fore.BLACK + Back.GREEN + "Normal Pattern")
+            print(Style.RESET_ALL)
+        else:
+            print(Fore.BLACK + Back.RED + "Found Anomaly Pattern!")
+            print(Style.RESET_ALL)
 
+    checkValues()
     time.sleep(1)
-
-print(Fore.RED + 'some red text')
-print(Back.GREEN + 'and with a green background')
-print(Style.DIM + 'and in dim text')
-print(Style.RESET_ALL)
-print('back to normal now')
+    print('\n','_'*25)
