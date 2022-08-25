@@ -31,12 +31,14 @@ testData = loadData.loadData(printColumnNames=True)
 testData = testData.sample(frac=1).reset_index(drop=True).tail(30) #shuffling data and searching for the 30 last individuals
 print(f'\n>> Input data for validation:\n{testData.head()}\n')
 
-# checking for anomalies:
+# checking for anomalies (can be editable cautiously):
 time.sleep(1)
 print('\n>> Starting anomaly detection...')
 time.sleep(2)
 
 anomalyDetectionInput = testData[['rollRate','pitchRate','yawRate']].values
+clusteringInput = testData.values
+
 print('\nValues:')
 for r in range(anomalyDetectionInput.shape[0]): #rows
     rollRate,pitchRate,yawRate = anomalyDetectionInput[r][0],\
@@ -54,6 +56,21 @@ for r in range(anomalyDetectionInput.shape[0]): #rows
         else:
             print(Fore.BLACK + Back.RED + "Found Anomaly Pattern!")
             print(Style.RESET_ALL)
+            print('\n>> Starting clustering...')
+
+            inputList = []
+            for c in range(clusteringInput.shape[1]): #columns
+                inputList.append(clusteringInput[r][c])
+            
+            print(f'\n* roll:{inputList[0]}\n* pitch:{inputList[1]}\n* heading:{inputList[2]}\n* rollRate:{inputList[3]}\n* pitchRate:{inputList[4]}\n* yawRate:{inputList[5]}\n* groundSpeed:{inputList[6]}\n* climbRate:{inputList[7]}\n* altitudeRelative:{inputList[8]}\n* throttlePct:{inputList[9]}')
+
+            inputArray = np.array([inputList])
+            clusteringResult = module2.predict(inputArray)
+            print(f'\n>> Cluster:{clusteringResult}')
+
+            del inputList
+
+
 
     checkValues()
     time.sleep(1)
