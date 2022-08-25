@@ -6,11 +6,6 @@ relPath = "dependencies"
 filesPath = os.path.join(absPath,relPath)
 
 def loadData(filename='rawData.csv',path=filesPath,printColumnNames=False):
-
-    """
-    This module loads a dataframe (Pandas) as input
-    """
-
     os.chdir(filesPath)
     data = pd.read_csv(filename,sep=";")[['roll','pitch','heading','rollRate',
                                           'pitchRate','yawRate','groundSpeed',

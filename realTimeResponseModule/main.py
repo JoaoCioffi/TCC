@@ -3,13 +3,14 @@ import anomalyDetection,clustering,loadData
 import numpy as np
 import pandas as pd
 import colorama;colorama.init(autoreset=True)
+import termcolor
 from colorama import Fore, Back, Style
 import time
 
 startMain = time.time()
 
 #____________// MAIN ARCHITECTURE //____________#
-print('-='*35)
+print('-='*50)
 print('\n\t\t<< Real Time Response Analysis >>\n\n')
 
 
@@ -82,49 +83,88 @@ for r in range(anomalyDetectionInput.shape[0]): #rows
                           'climbRate':[],
                           'altitudeRelative':[],
                           'throttlePct':[]};weightedCluster = []
+            
+            #------------#
             ## 1.roll:
+            
             rollAvg = statistics['Avg'][0]
             rollSTD = statistics['std'][0]
             upperBoundary_roll = rollAvg + rollSTD
             lowerBoundary_roll = -upperBoundary_roll
-            if lowerBoundary_roll <= inputList[0] <= upperBoundary_roll:
-                sequential['roll'].append(0) #normal range (level=0)
-            elif (lowerBoundary_roll-rollSTD) <= inputList[0] < lowerBoundary_roll or upperBoundary_roll < inputList[0] <= (upperBoundary_roll + rollSTD):
-                sequential['roll'].append(1) #over normal boundaries limited by 1std (level=1)
-            elif (lowerBoundary_roll-2*rollSTD) <= inputList[0] < (lowerBoundary_roll-rollSTD) or (upperBoundary_roll + rollSTD) < inputList[0] <= (upperBoundary_roll+2*rollSTD):
-                sequential['roll'].append(2) #between 1std and 2std (level=2)
-            elif (lowerBoundary_roll-3*rollSTD) <= inputList[0] < (lowerBoundary_roll-2*rollSTD) or (upperBoundary_roll+2*rollSTD) < inputList[0] <= (upperBoundary_roll+3*rollSTD):
-                sequential['roll'].append(3) #greater than 2std (level=3)
             
+            if lowerBoundary_roll <= inputList[0] <= upperBoundary_roll:
+                sequential['roll'].append('normal') #normal range (level=0)
+            elif (lowerBoundary_roll-rollSTD) <= inputList[0] < lowerBoundary_roll or upperBoundary_roll < inputList[0] <= (upperBoundary_roll + rollSTD):
+                sequential['roll'].append('mild') #over normal boundaries limited by 1std (level=1)
+            elif (lowerBoundary_roll-2*rollSTD) <= inputList[0] < (lowerBoundary_roll-rollSTD) or (upperBoundary_roll + rollSTD) < inputList[0] <= (upperBoundary_roll+2*rollSTD):
+                sequential['roll'].append('moderate') #between 1std and 2std (level=2)
+            else:
+                sequential['roll'].append('crytical') #greater than 2std (level=3)
+            
+            #------------#
             ## 2.pitch:
             pitchAvg = statistics['Avg'][1]
             pitchSTD = statistics['std'][1]
             upperBoundary_pitch = pitchAvg + pitchSTD
+            lowerBoundary_pitch = -upperBoundary_pitch
+            
+            if lowerBoundary_pitch <= inputList[1] <= upperBoundary_pitch:
+                sequential['pitch'].append('normal') #normal range (level=0)
+            elif (lowerBoundary_pitch-pitchSTD) <= inputList[1] < lowerBoundary_pitch or upperBoundary_pitch < inputList[1] <= (upperBoundary_pitch + pitchSTD):
+                sequential['pitch'].append('mild') #over normal boundaries limited by 1std (level=1)
+            elif (lowerBoundary_pitch-2*pitchSTD) <= inputList[1] < (lowerBoundary_pitch-pitchSTD) or (upperBoundary_pitch + pitchSTD) < inputList[1] <= (upperBoundary_pitch+2*pitchSTD):
+                sequential['pitch'].append('moderate') #between 1std and 2std (level=2)
+            else:
+                sequential['pitch'].append('crytical') #greater than 2std (level=3)
 
+            #------------#
             ## 3.heading:
+            headingAvg = statistics['Avg'][2]
+            headingSTD = statistics['std'][2]
+            upperBoundary_heading = headingAvg + headingSTD
+            lowerBoundary_heading = -upperBoundary_heading
 
+            if lowerBoundary_heading <= inputList[2] <= upperBoundary_heading:
+                sequential['heading'].append('normal') #normal range (level=0)
+            elif (lowerBoundary_heading-headingSTD) <= inputList[2] < lowerBoundary_heading or upperBoundary_heading < inputList[2] <= (upperBoundary_heading + headingSTD):
+                sequential['heading'].append('mild') #over normal boundaries limited by 1std (level=1)
+            elif (lowerBoundary_heading-2*headingSTD) <= inputList[1] < (lowerBoundary_heading-headingSTD) or (upperBoundary_pitch + pitchSTD) < inputList[1] <= (upperBoundary_heading+2*headingSTD):
+                sequential['heading'].append('moderate') #between 1std and 2std (level=2)
+            else:
+                sequential['heading'].append('crytical') #greater than 2std (level=3)
+
+            #------------#
             ## 4.rollRate:
 
+            #------------#
             ## 5.pitchRate
 
+            #------------#
             ## 6.yawRate:
             
+            #------------#
             ## 7.groundSpeed:
 
+            #------------#
             ## 8.climbRate
 
+            #------------#
             ## 9.altitudeRelative:
 
+            #------------#
             ## 10.throttlePct:
 
-                
-            print(sequential)
+            #------------#
+            ## weighted cluster:
+            weightedCluster.append(None)
+
+            print(f'_\n|\n|\n|---> Individuals:\n\n{sequential}\n\n\n\n~ Weighted Cluster:{weightedCluster} ~')
             
             del inputList
 
     checkValues()
     time.sleep(1)
-    print('\n','_'*25)
+    print('\n','-|'*35)
 
 endMain = time.time()
 print(f'\n>> Time elapsed is {round((endMain-startMain),3)} seconds.\n   End of execution.\n')
