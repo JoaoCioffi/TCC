@@ -5,6 +5,7 @@ import pandas as pd
 import colorama;colorama.init(autoreset=True)
 import termcolor
 from colorama import Fore, Back, Style
+import progressbar
 import time
 
 startMain = time.time()
@@ -35,16 +36,18 @@ print(f'\n>> Input data for validation:\n{testData.head()}\n\n>> Statistics:\n{p
 
 # checking for anomalies (can be editable cautiously):
 time.sleep(1)
-print('\n>> Starting anomaly detection...')
+print('\n>> Starting anomaly detection...\n')
 time.sleep(2)
 
 anomalyDetectionInput = testData[['rollRate','pitchRate','yawRate']].values
 clusteringInput = testData.values
 
 
-print('\nValues:')
+widgets = [' Reading data: ', progressbar.RotatingMarker()]
+bar = progressbar.ProgressBar(widgets=widgets).start()
 
 for r in range(anomalyDetectionInput.shape[0]): #rows
+    bar.update(r)
     rollRate,pitchRate,yawRate = anomalyDetectionInput[r][0],\
                                  anomalyDetectionInput[r][1],\
                                  anomalyDetectionInput[r][2]
@@ -72,7 +75,7 @@ for r in range(anomalyDetectionInput.shape[0]): #rows
             clusteringResult = module2.predict(inputArray)
             print(f'\n>> Main Cluster (KNN):{clusteringResult}')
 
-            # For each 3 sequential anomalies, we need to get a Weighted Cluster to take our real-time decision
+            # For each 3 sequential candidates, we need to get a Weighted Cluster to take our real-time decision
             sequential = {'roll':[],
                           'pitch':[],
                           'heading':[],
@@ -85,86 +88,162 @@ for r in range(anomalyDetectionInput.shape[0]): #rows
                           'throttlePct':[]};weightedCluster = []
             
             #------------#
-            ## 1.roll:
-            
-            rollAvg = statistics['Avg'][0]
-            rollSTD = statistics['std'][0]
-            upperBoundary_roll = rollAvg + rollSTD
-            lowerBoundary_roll = -upperBoundary_roll
+            ## 0.roll:
+            rollAvg = statistics['Avg'][0];rollStd = statistics['std'][0]
+            upperBoundary_roll = rollAvg + 3*rollStd;lowerBoundary_roll = rollAvg - 3*rollStd # mean() - 3std()
             
             if lowerBoundary_roll <= inputList[0] <= upperBoundary_roll:
                 sequential['roll'].append('normal') #normal range (level=0)
-            elif (lowerBoundary_roll-rollSTD) <= inputList[0] < lowerBoundary_roll or upperBoundary_roll < inputList[0] <= (upperBoundary_roll + rollSTD):
+            elif (lowerBoundary_roll-rollStd) <= inputList[0] < lowerBoundary_roll or upperBoundary_roll < inputList[0] <= (upperBoundary_roll + rollStd):
                 sequential['roll'].append('mild') #over normal boundaries limited by 1std (level=1)
-            elif (lowerBoundary_roll-2*rollSTD) <= inputList[0] < (lowerBoundary_roll-rollSTD) or (upperBoundary_roll + rollSTD) < inputList[0] <= (upperBoundary_roll+2*rollSTD):
+            elif (lowerBoundary_roll-2*rollStd) <= inputList[0] < (lowerBoundary_roll-rollStd) or (upperBoundary_roll + rollStd) < inputList[0] <= (upperBoundary_roll+2*rollStd):
                 sequential['roll'].append('moderate') #between 1std and 2std (level=2)
             else:
-                sequential['roll'].append('crytical') #greater than 2std (level=3)
+                sequential['roll'].append('critical') #greater than 2std (level=3)
             
             #------------#
-            ## 2.pitch:
-            pitchAvg = statistics['Avg'][1]
-            pitchSTD = statistics['std'][1]
-            upperBoundary_pitch = pitchAvg + pitchSTD
-            lowerBoundary_pitch = -upperBoundary_pitch
+            ## 1.pitch:
+            pitchAvg = statistics['Avg'][1];pitchStd = statistics['std'][1]
+            upperBoundary_pitch = pitchAvg + 3*pitchStd;lowerBoundary_pitch = pitchAvg - 3*pitchStd
             
             if lowerBoundary_pitch <= inputList[1] <= upperBoundary_pitch:
-                sequential['pitch'].append('normal') #normal range (level=0)
-            elif (lowerBoundary_pitch-pitchSTD) <= inputList[1] < lowerBoundary_pitch or upperBoundary_pitch < inputList[1] <= (upperBoundary_pitch + pitchSTD):
-                sequential['pitch'].append('mild') #over normal boundaries limited by 1std (level=1)
-            elif (lowerBoundary_pitch-2*pitchSTD) <= inputList[1] < (lowerBoundary_pitch-pitchSTD) or (upperBoundary_pitch + pitchSTD) < inputList[1] <= (upperBoundary_pitch+2*pitchSTD):
-                sequential['pitch'].append('moderate') #between 1std and 2std (level=2)
+                sequential['pitch'].append('normal')
+            elif (lowerBoundary_pitch-pitchStd) <= inputList[1] < lowerBoundary_pitch or upperBoundary_pitch < inputList[1] <= (upperBoundary_pitch + pitchStd):
+                sequential['pitch'].append('mild')
+            elif (lowerBoundary_pitch-2*pitchStd) <= inputList[1] < (lowerBoundary_pitch-pitchStd) or (upperBoundary_pitch + pitchStd) < inputList[1] <= (upperBoundary_pitch+2*pitchStd):
+                sequential['pitch'].append('moderate')
             else:
-                sequential['pitch'].append('crytical') #greater than 2std (level=3)
+                sequential['pitch'].append('critical')
 
             #------------#
-            ## 3.heading:
-            headingAvg = statistics['Avg'][2]
-            headingSTD = statistics['std'][2]
-            upperBoundary_heading = headingAvg + headingSTD
-            lowerBoundary_heading = -upperBoundary_heading
+            ## 2.heading:
+            headingAvg = statistics['Avg'][2];headingStd = statistics['std'][2]
+            upperBoundary_heading = headingAvg + 3*headingStd;lowerBoundary_heading = headingAvg - 3*headingStd
 
             if lowerBoundary_heading <= inputList[2] <= upperBoundary_heading:
-                sequential['heading'].append('normal') #normal range (level=0)
-            elif (lowerBoundary_heading-headingSTD) <= inputList[2] < lowerBoundary_heading or upperBoundary_heading < inputList[2] <= (upperBoundary_heading + headingSTD):
-                sequential['heading'].append('mild') #over normal boundaries limited by 1std (level=1)
-            elif (lowerBoundary_heading-2*headingSTD) <= inputList[1] < (lowerBoundary_heading-headingSTD) or (upperBoundary_pitch + pitchSTD) < inputList[1] <= (upperBoundary_heading+2*headingSTD):
-                sequential['heading'].append('moderate') #between 1std and 2std (level=2)
+                sequential['heading'].append('normal')
+            elif (lowerBoundary_heading-headingStd) <= inputList[2] < lowerBoundary_heading or upperBoundary_heading < inputList[2] <= (upperBoundary_heading + headingStd):
+                sequential['heading'].append('mild')
+            elif (lowerBoundary_heading-2*headingStd) <= inputList[2] < (lowerBoundary_heading-headingStd) or (upperBoundary_pitch + headingStd) < inputList[2] <= (upperBoundary_heading+2*headingStd):
+                sequential['heading'].append('moderate')
             else:
-                sequential['heading'].append('crytical') #greater than 2std (level=3)
+                sequential['heading'].append('critical')
 
             #------------#
-            ## 4.rollRate:
+            ## 3.rollRate:
+            rollRateAvg = statistics['Avg'][3];rollRateStd = statistics['std'][3]
+            upperBoundary_rollRate = rollRateAvg + 3*rollRateStd;lowerBoundary_rollRate = rollRateAvg - 3*rollRateStd
+
+            if lowerBoundary_rollRate <= inputList[3] <= upperBoundary_rollRate:
+                sequential['rollRate'].append('normal')
+            elif (lowerBoundary_rollRate-rollRateStd) <= inputList[3] < lowerBoundary_rollRate or upperBoundary_rollRate < inputList[3] <= (upperBoundary_rollRate + rollRateStd):
+                sequential['rollRate'].append('mild')
+            elif (lowerBoundary_rollRate-2*rollRateStd) <= inputList[3] < (lowerBoundary_rollRate-rollRateStd) or (upperBoundary_rollRate + rollRateStd) < inputList[3] <= (upperBoundary_rollRate+2*rollRateStd):
+                sequential['rollRate'].append('moderate')
+            else:
+                sequential['rollRate'].append('critical')
 
             #------------#
-            ## 5.pitchRate
+            ## 4.pitchRate
+            pitchRateAvg = statistics['Avg'][4];pitchRateStd = statistics['std'][4]
+            upperBoundary_pitchRate = pitchRateAvg + 3*pitchRateStd;lowerBoundary_pitchRate = pitchRateAvg - 3*pitchRateStd
+
+            if lowerBoundary_pitchRate <= inputList[4] <= upperBoundary_pitchRate:
+                sequential['pitchRate'].append('normal')
+            elif (lowerBoundary_pitchRate-pitchRateStd) <= inputList[4] < lowerBoundary_pitchRate or upperBoundary_pitchRate < inputList[4] <= (upperBoundary_pitchRate + pitchRateStd):
+                sequential['pitchRate'].append('mild')
+            elif (lowerBoundary_pitchRate-2*pitchRateStd) <= inputList[4] < (lowerBoundary_pitchRate-pitchRateStd) or (upperBoundary_pitchRate + pitchRateStd) < inputList[4] <= (upperBoundary_pitchRate+2*pitchRateStd):
+                sequential['pitchRate'].append('moderate')
+            else:
+                sequential['pitchRate'].append('critical')
 
             #------------#
-            ## 6.yawRate:
+            ## 5.yawRate:
+            yawRateAvg = statistics['Avg'][5];yawRateStd = statistics['std'][5]
+            upperBoundary_yawRate = yawRateAvg + 3*yawRateStd;lowerBoundary_yawRate = yawRateAvg - 3*yawRateStd
+
+            if lowerBoundary_yawRate <= inputList[5] <= upperBoundary_yawRate:
+                sequential['yawRate'].append('normal')
+            elif (lowerBoundary_yawRate-yawRateAvg) <= inputList[5] < lowerBoundary_yawRate or upperBoundary_yawRate < inputList[5] <= (upperBoundary_yawRate + yawRateAvg):
+                sequential['yawRate'].append('mild')
+            elif (lowerBoundary_yawRate-2*yawRateStd) <= inputList[5] < (lowerBoundary_yawRate-yawRateStd) or (upperBoundary_yawRate + yawRateStd) < inputList[5] <= (upperBoundary_yawRate+2*yawRateStd):
+                sequential['yawRate'].append('moderate')
+            else:
+                sequential['yawRate'].append('critical')
+
             
             #------------#
-            ## 7.groundSpeed:
+            ## 6.groundSpeed:
+            groundSpeedAvg = statistics['Avg'][6];groundSpeedStd = statistics['std'][6]
+            upperBoundary_groundSpeed = groundSpeedAvg + 3*groundSpeedStd;lowerBoundary_groundSpeed = groundSpeedAvg - 3*groundSpeedStd
+
+            if lowerBoundary_groundSpeed <= inputList[6] <= upperBoundary_groundSpeed:
+                sequential['groundSpeed'].append('normal')
+            elif (lowerBoundary_groundSpeed-groundSpeedAvg) <= inputList[6] < lowerBoundary_groundSpeed or upperBoundary_groundSpeed < inputList[6] <= (upperBoundary_groundSpeed + groundSpeedAvg):
+                sequential['groundSpeed'].append('mild')
+            elif (lowerBoundary_groundSpeed-2*groundSpeedStd) <= inputList[6] < (lowerBoundary_groundSpeed-groundSpeedStd) or (upperBoundary_groundSpeed + groundSpeedStd) < inputList[6] <= (upperBoundary_groundSpeed+2*groundSpeedStd):
+                sequential['groundSpeed'].append('moderate')
+            else:
+                sequential['groundSpeed'].append('critical')
 
             #------------#
-            ## 8.climbRate
+            ## 7.climbRate
+            climbRateAvg = statistics['Avg'][7];climbRateStd = statistics['std'][7]
+            upperBoundary_climbRate = climbRateAvg + 3*climbRateStd;lowerBoundary_climbRate = climbRateAvg - 3*climbRateStd
+
+            if lowerBoundary_climbRate <= inputList[7] <= upperBoundary_climbRate:
+                sequential['climbRate'].append('normal')
+            elif (lowerBoundary_climbRate-climbRateAvg) <= inputList[7] < lowerBoundary_climbRate or upperBoundary_climbRate < inputList[7] <= (upperBoundary_climbRate + climbRateAvg):
+                sequential['climbRate'].append('mild')
+            elif (lowerBoundary_climbRate-2*climbRateStd) <= inputList[7] < (lowerBoundary_climbRate-climbRateStd) or (upperBoundary_climbRate + climbRateStd) < inputList[7] <= (upperBoundary_climbRate+2*climbRateStd):
+                sequential['climbRate'].append('moderate')
+            else:
+                sequential['climbRate'].append('critical')
+
 
             #------------#
-            ## 9.altitudeRelative:
+            ## 8.altitudeRelative:
+            altitudeRelativeAvg = statistics['Avg'][8];altitudeRelativeStd = statistics['std'][8]
+            upperBoundary_altitudeRelative = altitudeRelativeAvg + 3*altitudeRelativeStd;lowerBoundary_altitudeRelative = altitudeRelativeAvg - 3*altitudeRelativeStd
+
+            if lowerBoundary_altitudeRelative <= inputList[8] <= upperBoundary_altitudeRelative:
+                sequential['altitudeRelative'].append('normal')
+            elif (lowerBoundary_altitudeRelative-altitudeRelativeAvg) <= inputList[8] < lowerBoundary_altitudeRelative or upperBoundary_altitudeRelative < inputList[8] <= (upperBoundary_altitudeRelative + altitudeRelativeAvg):
+                sequential['altitudeRelative'].append('mild')
+            elif (lowerBoundary_altitudeRelative-2*altitudeRelativeStd) <= inputList[8] < (lowerBoundary_altitudeRelative-altitudeRelativeStd) or (upperBoundary_altitudeRelative + altitudeRelativeStd) < inputList[8] <= (upperBoundary_altitudeRelative+2*altitudeRelativeStd):
+                sequential['altitudeRelative'].append('moderate')
+            else:
+                sequential['altitudeRelative'].append('critical')
 
             #------------#
-            ## 10.throttlePct:
+            ## 9.throttlePct:
+            throttlePctAvg = statistics['Avg'][9];throttlePctStd = statistics['std'][9]
+            upperBoundary_throttlePct = throttlePctAvg + 3*throttlePctStd;lowerBoundary_throttlePct = throttlePctAvg - 3*throttlePctStd
+
+            if lowerBoundary_throttlePct <= inputList[9] <= upperBoundary_throttlePct:
+                sequential['throttlePct'].append('normal')
+            elif (lowerBoundary_throttlePct-throttlePctAvg) <= inputList[9] < lowerBoundary_throttlePct or upperBoundary_throttlePct < inputList[9] <= (upperBoundary_throttlePct + throttlePctAvg):
+                sequential['throttlePct'].append('mild')
+            elif (lowerBoundary_throttlePct-2*throttlePctStd) <= inputList[9] < (lowerBoundary_throttlePct-throttlePctStd) or (upperBoundary_throttlePct + throttlePctStd) < inputList[9] <= (upperBoundary_throttlePct+2*throttlePctStd):
+                sequential['throttlePct'].append('moderate')
+            else:
+                sequential['throttlePct'].append('critical')
 
             #------------#
             ## weighted cluster:
             weightedCluster.append(None)
 
-            print(f'_\n|\n|\n|---> Individuals:\n\n{sequential}\n\n\n\n~ Weighted Cluster:{weightedCluster} ~')
+            print(f'\n>> Individuals:\n{pd.DataFrame(sequential)}\n\n~ Weighted Cluster:{weightedCluster} ~')
             
-            del inputList
+            # del inputList
 
     checkValues()
     time.sleep(1)
-    print('\n','-|'*35)
+    print('\n','.'*37,'\n')
 
 endMain = time.time()
 print(f'\n>> Time elapsed is {round((endMain-startMain),3)} seconds.\n   End of execution.\n')
+
+
+
+# print(termcolor.colored("Crytical Anomaly", "red", attrs=['bold']))
