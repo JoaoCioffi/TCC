@@ -231,11 +231,19 @@ for r in range(anomalyDetectionInput.shape[0]): #rows
 
             #------------#
             ## weighted cluster:
-            weightedCluster.append(None)
+            weightedCluster.append(pd.DataFrame(sequential).mode(axis=1).values[0][0])
 
-            print(f'\n>> Individuals:\n{pd.DataFrame(sequential)}\n\n~ Weighted Cluster:{weightedCluster} ~')
-            
-            # del inputList
+            print(f'\n>> Individuals:\n{pd.DataFrame(sequential)}')
+            if weightedCluster[0] == 'normal':
+                print('\nWeighted Cluster: ' + termcolor.colored("Normal Level", "green", attrs=['bold']) + '\n')
+            elif weightedCluster[0] == 'mild':
+                print('\nWeighted Cluster: ' + termcolor.colored("Mild Level", "yellow", attrs=['bold']) + '\n')
+            elif weightedCluster[0] == 'moderate':
+                print('\nWeighted Cluster: ' + termcolor.colored("Moderate Level", "magenta", attrs=['bold']))
+            else:
+                print('\nWeighted Cluster: ' + termcolor.colored("Critical Level", "red", attrs=['bold']))
+                decision = input('\n>> Abort Mission? [Y/N] -> ').upper()
+                return decision
 
     checkValues()
     time.sleep(1)
@@ -243,7 +251,3 @@ for r in range(anomalyDetectionInput.shape[0]): #rows
 
 endMain = time.time()
 print(f'\n>> Time elapsed is {round((endMain-startMain),3)} seconds.\n   End of execution.\n')
-
-
-
-# print(termcolor.colored("Crytical Anomaly", "red", attrs=['bold']))
