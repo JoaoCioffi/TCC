@@ -42,12 +42,13 @@ time.sleep(2)
 anomalyDetectionInput = testData[['rollRate','pitchRate','yawRate']].values
 clusteringInput = testData.values
 
-
+# progress bar object
 widgets = [' Reading data: ', progressbar.RotatingMarker()]
 bar = progressbar.ProgressBar(widgets=widgets).start()
 
+# iteration for reading data (delay = 1s)
 for r in range(anomalyDetectionInput.shape[0]): #rows
-    bar.update(r)
+    bar.update(r) #bar update for each 'r' in range
     rollRate,pitchRate,yawRate = anomalyDetectionInput[r][0],\
                                  anomalyDetectionInput[r][1],\
                                  anomalyDetectionInput[r][2]
@@ -56,10 +57,11 @@ for r in range(anomalyDetectionInput.shape[0]): #rows
     print(f'\n* rollRate:{rollRate}dg/sec\n* pitchRate:{pitchRate}dg/sec\n* yawRate:{yawRate}dg/sec\n')
 
     def checkValues(inputArray=inputArray):
-        anomalyResult = module1.predict(inputArray)
+        anomalyResult = module1.predict(inputArray) #loaded model prediction (anomaly classification)
         if anomalyResult[0] == 0:
             print(Fore.BLACK + Back.GREEN + "Normal Pattern")
             print(Style.RESET_ALL)
+            return None 
         else:
             print(Fore.BLACK + Back.RED + "Found Anomalous Pattern!")
             print(Style.RESET_ALL)
@@ -72,7 +74,7 @@ for r in range(anomalyDetectionInput.shape[0]): #rows
             
             inputArray = np.array([inputList])
 
-            clusteringResult = module2.predict(inputArray)
+            clusteringResult = module2.predict(inputArray) #loaded model prediction (anomaly clustering)
             print(f'\n>> Main Cluster (KNN):{clusteringResult}')
 
             # For each 3 sequential candidates, we need to get a Weighted Cluster to take our real-time decision
@@ -89,8 +91,8 @@ for r in range(anomalyDetectionInput.shape[0]): #rows
             
             #------------#
             ## 0.roll:
-            rollAvg = statistics['Avg'][0];rollStd = statistics['std'][0]
-            upperBoundary_roll = rollAvg + 3*rollStd;lowerBoundary_roll = rollAvg - 3*rollStd # mean() - 3std()
+            rollAvg = statistics['Avg'][0];rollStd = statistics['std'][0] #mean() and std()
+            upperBoundary_roll = rollAvg + 3*rollStd;lowerBoundary_roll = rollAvg - 3*rollStd #boundaries: mean() +/- 3std()
             
             if lowerBoundary_roll <= inputList[0] <= upperBoundary_roll:
                 sequential['roll'].append('ok') #normal range (level=0)
@@ -231,23 +233,29 @@ for r in range(anomalyDetectionInput.shape[0]): #rows
 
             #------------#
             ## weighted cluster:
-            weightedCluster.append(pd.DataFrame(sequential).mode(axis=0).values[0][0])
+            weightedCluster.append(pd.DataFrame(sequential).mode(axis=0).values[0][0]) #weighted cluster over previous data
 
             print(f'\n>> Individuals:\n{pd.DataFrame(sequential)}')
             if weightedCluster[0] == 'ok':
-                print('\nWeighted Cluster: ' + termcolor.colored("Normal Level", "green", attrs=['bold']) + '\n')
+                print('\nWeighted Cluster: ' + termcolor.colored("Normal Level", "green", attrs=['bold']) + '\n') #keep flying
             elif weightedCluster[0] == 'mild':
-                print('\nWeighted Cluster: ' + termcolor.colored("Mild Level", "blue", attrs=['bold']) + '\n')
+                print('\nWeighted Cluster: ' + termcolor.colored("Mild Level", "blue", attrs=['bold']) + '\n') #keep flying cautiously
             elif weightedCluster[0] == 'moderate':
-                print('\nWeighted Cluster: ' + termcolor.colored("Moderate Level", "yellow", attrs=['bold']))
+                print('\nWeighted Cluster: ' + termcolor.colored("Moderate Level", "yellow", attrs=['bold'])) #go to the next waypoint
             else:
-                print('\nWeighted Cluster: ' + termcolor.colored("Critical Level", "red", attrs=['bold']) + '\n')
-                decision = input('\n>> Abort Mission? [Y/N] -> ').upper()
-                return decision
-
-    checkValues()
-    time.sleep(1)
+                print('\nWeighted Cluster: ' + termcolor.colored("Critical Level", "red", attrs=['bold']) + '\n') #land on this location
+                abort = input('\n>> Abort Mission? [Y/N] -> ').upper() #user decision
+                return abort
+    
+    log2Terminal = checkValues() #calling function and running script (terminal output)
+    time.sleep(1) #delay = 1s (approximately a real drone response rating)
     print('\n','.'*37,'\n')
+    if log2Terminal == 'Y':
+        print(Fore.BLACK + Back.YELLOW + "\nAborted Mission!")
+        print(Style.RESET_ALL)
+        break
+    else:
+        continue
 
 endMain = time.time()
 print(f'\n>> Time elapsed is {round((endMain-startMain),3)} seconds.\n   End of execution.\n')
