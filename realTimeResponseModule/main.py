@@ -31,7 +31,7 @@ print(f'\n>> Loaded Clustering Module in {round((end_2-start_2),3)} seconds.\n')
 #____________// VALIDATION //____________#
 # test data (can be editable):
 testData,statistics = loadData.loadData(printColumnNames=True)
-testData = testData.sample(frac=1).reset_index(drop=True).tail(30) #shuffling data and searching for the 30 last individuals
+testData = testData.sample(frac=1).reset_index(drop=True).tail(60) #shuffling data and searching for the 30 last individuals
 print(f'\n>> Input data for validation:\n{testData.head()}\n\n>> Statistics:\n{pd.DataFrame(statistics)}\n')
 
 # checking for anomalies (can be editable cautiously):
@@ -93,7 +93,7 @@ for r in range(anomalyDetectionInput.shape[0]): #rows
             upperBoundary_roll = rollAvg + 3*rollStd;lowerBoundary_roll = rollAvg - 3*rollStd # mean() - 3std()
             
             if lowerBoundary_roll <= inputList[0] <= upperBoundary_roll:
-                sequential['roll'].append('normal') #normal range (level=0)
+                sequential['roll'].append('ok') #normal range (level=0)
             elif (lowerBoundary_roll-rollStd) <= inputList[0] < lowerBoundary_roll or upperBoundary_roll < inputList[0] <= (upperBoundary_roll + rollStd):
                 sequential['roll'].append('mild') #over normal boundaries limited by 1std (level=1)
             elif (lowerBoundary_roll-2*rollStd) <= inputList[0] < (lowerBoundary_roll-rollStd) or (upperBoundary_roll + rollStd) < inputList[0] <= (upperBoundary_roll+2*rollStd):
@@ -107,7 +107,7 @@ for r in range(anomalyDetectionInput.shape[0]): #rows
             upperBoundary_pitch = pitchAvg + 3*pitchStd;lowerBoundary_pitch = pitchAvg - 3*pitchStd
             
             if lowerBoundary_pitch <= inputList[1] <= upperBoundary_pitch:
-                sequential['pitch'].append('normal')
+                sequential['pitch'].append('ok')
             elif (lowerBoundary_pitch-pitchStd) <= inputList[1] < lowerBoundary_pitch or upperBoundary_pitch < inputList[1] <= (upperBoundary_pitch + pitchStd):
                 sequential['pitch'].append('mild')
             elif (lowerBoundary_pitch-2*pitchStd) <= inputList[1] < (lowerBoundary_pitch-pitchStd) or (upperBoundary_pitch + pitchStd) < inputList[1] <= (upperBoundary_pitch+2*pitchStd):
@@ -121,7 +121,7 @@ for r in range(anomalyDetectionInput.shape[0]): #rows
             upperBoundary_heading = headingAvg + 3*headingStd;lowerBoundary_heading = headingAvg - 3*headingStd
 
             if lowerBoundary_heading <= inputList[2] <= upperBoundary_heading:
-                sequential['heading'].append('normal')
+                sequential['heading'].append('ok')
             elif (lowerBoundary_heading-headingStd) <= inputList[2] < lowerBoundary_heading or upperBoundary_heading < inputList[2] <= (upperBoundary_heading + headingStd):
                 sequential['heading'].append('mild')
             elif (lowerBoundary_heading-2*headingStd) <= inputList[2] < (lowerBoundary_heading-headingStd) or (upperBoundary_pitch + headingStd) < inputList[2] <= (upperBoundary_heading+2*headingStd):
@@ -135,7 +135,7 @@ for r in range(anomalyDetectionInput.shape[0]): #rows
             upperBoundary_rollRate = rollRateAvg + 3*rollRateStd;lowerBoundary_rollRate = rollRateAvg - 3*rollRateStd
 
             if lowerBoundary_rollRate <= inputList[3] <= upperBoundary_rollRate:
-                sequential['rollRate'].append('normal')
+                sequential['rollRate'].append('ok')
             elif (lowerBoundary_rollRate-rollRateStd) <= inputList[3] < lowerBoundary_rollRate or upperBoundary_rollRate < inputList[3] <= (upperBoundary_rollRate + rollRateStd):
                 sequential['rollRate'].append('mild')
             elif (lowerBoundary_rollRate-2*rollRateStd) <= inputList[3] < (lowerBoundary_rollRate-rollRateStd) or (upperBoundary_rollRate + rollRateStd) < inputList[3] <= (upperBoundary_rollRate+2*rollRateStd):
@@ -149,7 +149,7 @@ for r in range(anomalyDetectionInput.shape[0]): #rows
             upperBoundary_pitchRate = pitchRateAvg + 3*pitchRateStd;lowerBoundary_pitchRate = pitchRateAvg - 3*pitchRateStd
 
             if lowerBoundary_pitchRate <= inputList[4] <= upperBoundary_pitchRate:
-                sequential['pitchRate'].append('normal')
+                sequential['pitchRate'].append('ok')
             elif (lowerBoundary_pitchRate-pitchRateStd) <= inputList[4] < lowerBoundary_pitchRate or upperBoundary_pitchRate < inputList[4] <= (upperBoundary_pitchRate + pitchRateStd):
                 sequential['pitchRate'].append('mild')
             elif (lowerBoundary_pitchRate-2*pitchRateStd) <= inputList[4] < (lowerBoundary_pitchRate-pitchRateStd) or (upperBoundary_pitchRate + pitchRateStd) < inputList[4] <= (upperBoundary_pitchRate+2*pitchRateStd):
@@ -163,7 +163,7 @@ for r in range(anomalyDetectionInput.shape[0]): #rows
             upperBoundary_yawRate = yawRateAvg + 3*yawRateStd;lowerBoundary_yawRate = yawRateAvg - 3*yawRateStd
 
             if lowerBoundary_yawRate <= inputList[5] <= upperBoundary_yawRate:
-                sequential['yawRate'].append('normal')
+                sequential['yawRate'].append('ok')
             elif (lowerBoundary_yawRate-yawRateAvg) <= inputList[5] < lowerBoundary_yawRate or upperBoundary_yawRate < inputList[5] <= (upperBoundary_yawRate + yawRateAvg):
                 sequential['yawRate'].append('mild')
             elif (lowerBoundary_yawRate-2*yawRateStd) <= inputList[5] < (lowerBoundary_yawRate-yawRateStd) or (upperBoundary_yawRate + yawRateStd) < inputList[5] <= (upperBoundary_yawRate+2*yawRateStd):
@@ -178,7 +178,7 @@ for r in range(anomalyDetectionInput.shape[0]): #rows
             upperBoundary_groundSpeed = groundSpeedAvg + 3*groundSpeedStd;lowerBoundary_groundSpeed = groundSpeedAvg - 3*groundSpeedStd
 
             if lowerBoundary_groundSpeed <= inputList[6] <= upperBoundary_groundSpeed:
-                sequential['groundSpeed'].append('normal')
+                sequential['groundSpeed'].append('ok')
             elif (lowerBoundary_groundSpeed-groundSpeedAvg) <= inputList[6] < lowerBoundary_groundSpeed or upperBoundary_groundSpeed < inputList[6] <= (upperBoundary_groundSpeed + groundSpeedAvg):
                 sequential['groundSpeed'].append('mild')
             elif (lowerBoundary_groundSpeed-2*groundSpeedStd) <= inputList[6] < (lowerBoundary_groundSpeed-groundSpeedStd) or (upperBoundary_groundSpeed + groundSpeedStd) < inputList[6] <= (upperBoundary_groundSpeed+2*groundSpeedStd):
@@ -192,7 +192,7 @@ for r in range(anomalyDetectionInput.shape[0]): #rows
             upperBoundary_climbRate = climbRateAvg + 3*climbRateStd;lowerBoundary_climbRate = climbRateAvg - 3*climbRateStd
 
             if lowerBoundary_climbRate <= inputList[7] <= upperBoundary_climbRate:
-                sequential['climbRate'].append('normal')
+                sequential['climbRate'].append('ok')
             elif (lowerBoundary_climbRate-climbRateAvg) <= inputList[7] < lowerBoundary_climbRate or upperBoundary_climbRate < inputList[7] <= (upperBoundary_climbRate + climbRateAvg):
                 sequential['climbRate'].append('mild')
             elif (lowerBoundary_climbRate-2*climbRateStd) <= inputList[7] < (lowerBoundary_climbRate-climbRateStd) or (upperBoundary_climbRate + climbRateStd) < inputList[7] <= (upperBoundary_climbRate+2*climbRateStd):
@@ -207,7 +207,7 @@ for r in range(anomalyDetectionInput.shape[0]): #rows
             upperBoundary_altitudeRelative = altitudeRelativeAvg + 3*altitudeRelativeStd;lowerBoundary_altitudeRelative = altitudeRelativeAvg - 3*altitudeRelativeStd
 
             if lowerBoundary_altitudeRelative <= inputList[8] <= upperBoundary_altitudeRelative:
-                sequential['altitudeRelative'].append('normal')
+                sequential['altitudeRelative'].append('ok')
             elif (lowerBoundary_altitudeRelative-altitudeRelativeAvg) <= inputList[8] < lowerBoundary_altitudeRelative or upperBoundary_altitudeRelative < inputList[8] <= (upperBoundary_altitudeRelative + altitudeRelativeAvg):
                 sequential['altitudeRelative'].append('mild')
             elif (lowerBoundary_altitudeRelative-2*altitudeRelativeStd) <= inputList[8] < (lowerBoundary_altitudeRelative-altitudeRelativeStd) or (upperBoundary_altitudeRelative + altitudeRelativeStd) < inputList[8] <= (upperBoundary_altitudeRelative+2*altitudeRelativeStd):
@@ -221,7 +221,7 @@ for r in range(anomalyDetectionInput.shape[0]): #rows
             upperBoundary_throttlePct = throttlePctAvg + 3*throttlePctStd;lowerBoundary_throttlePct = throttlePctAvg - 3*throttlePctStd
 
             if lowerBoundary_throttlePct <= inputList[9] <= upperBoundary_throttlePct:
-                sequential['throttlePct'].append('normal')
+                sequential['throttlePct'].append('ok')
             elif (lowerBoundary_throttlePct-throttlePctAvg) <= inputList[9] < lowerBoundary_throttlePct or upperBoundary_throttlePct < inputList[9] <= (upperBoundary_throttlePct + throttlePctAvg):
                 sequential['throttlePct'].append('mild')
             elif (lowerBoundary_throttlePct-2*throttlePctStd) <= inputList[9] < (lowerBoundary_throttlePct-throttlePctStd) or (upperBoundary_throttlePct + throttlePctStd) < inputList[9] <= (upperBoundary_throttlePct+2*throttlePctStd):
@@ -231,17 +231,17 @@ for r in range(anomalyDetectionInput.shape[0]): #rows
 
             #------------#
             ## weighted cluster:
-            weightedCluster.append(pd.DataFrame(sequential).mode(axis=1).values[0][0])
+            weightedCluster.append(pd.DataFrame(sequential).mode(axis=0).values[0][0])
 
             print(f'\n>> Individuals:\n{pd.DataFrame(sequential)}')
-            if weightedCluster[0] == 'normal':
+            if weightedCluster[0] == 'ok':
                 print('\nWeighted Cluster: ' + termcolor.colored("Normal Level", "green", attrs=['bold']) + '\n')
             elif weightedCluster[0] == 'mild':
-                print('\nWeighted Cluster: ' + termcolor.colored("Mild Level", "yellow", attrs=['bold']) + '\n')
+                print('\nWeighted Cluster: ' + termcolor.colored("Mild Level", "blue", attrs=['bold']) + '\n')
             elif weightedCluster[0] == 'moderate':
-                print('\nWeighted Cluster: ' + termcolor.colored("Moderate Level", "magenta", attrs=['bold']))
+                print('\nWeighted Cluster: ' + termcolor.colored("Moderate Level", "yellow", attrs=['bold']))
             else:
-                print('\nWeighted Cluster: ' + termcolor.colored("Critical Level", "red", attrs=['bold']))
+                print('\nWeighted Cluster: ' + termcolor.colored("Critical Level", "red", attrs=['bold']) + '\n')
                 decision = input('\n>> Abort Mission? [Y/N] -> ').upper()
                 return decision
 
