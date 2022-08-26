@@ -61,7 +61,7 @@ for r in range(anomalyDetectionInput.shape[0]): #rows
         if anomalyResult[0] == 0:
             print(Fore.BLACK + Back.GREEN + "Normal Pattern")
             print(Style.RESET_ALL)
-            return None 
+
         else:
             print(Fore.BLACK + Back.RED + "Found Anomalous Pattern!")
             print(Style.RESET_ALL)
@@ -70,7 +70,7 @@ for r in range(anomalyDetectionInput.shape[0]): #rows
             inputList = [] # will append the current flight data (all of them)
             for c in range(clusteringInput.shape[1]): #columns
                 inputList.append(clusteringInput[r][c])
-            print(f'\n* roll:{inputList[0]}dg\n* pitch:{inputList[1]}dg\n* heading:{inputList[2]}dg\n* rollRate:{inputList[3]}dg/s\n* pitchRate:{inputList[4]}dg/s\n* yawRate:{inputList[5]}dg/s\n* groundSpeed:{inputList[6]}m/s\n* climbRate:{inputList[7]}\n* altitudeRelative:{inputList[8]}m\n* throttlePct:{inputList[9]}%')
+            print(f'\n* roll:{inputList[0]}dg\n* pitch:{inputList[1]}dg\n* heading:{inputList[2]}dg\n* rollRate:{inputList[3]}dg/s\n* pitchRate:{inputList[4]}dg/s\n* yawRate:{inputList[5]}dg/s\n* groundSpeed:{inputList[6]}m/s\n* climbRate:{inputList[7]}m/s\n* altitudeRelative:{inputList[8]}m\n* throttlePct:{inputList[9]}%')
             
             inputArray = np.array([inputList])
 
@@ -234,9 +234,10 @@ for r in range(anomalyDetectionInput.shape[0]): #rows
             #------------#
             ## weighted cluster:
             weightedCluster.append(pd.DataFrame(sequential).mode(axis=0).values[0][0]) #weighted cluster over previous data
+            
 
             print(f'\n>> Individuals:\n{pd.DataFrame(sequential)}')
-            if weightedCluster[0] == 'ok':
+            if weightedCluster[0] == ' ':
                 print('\nWeighted Cluster: ' + termcolor.colored("Normal Level", "green", attrs=['bold']) + '\n') #keep flying
             elif weightedCluster[0] == 'mild':
                 print('\nWeighted Cluster: ' + termcolor.colored("Mild Level", "blue", attrs=['bold']) + '\n') #keep flying cautiously
@@ -246,8 +247,11 @@ for r in range(anomalyDetectionInput.shape[0]): #rows
                 print('\nWeighted Cluster: ' + termcolor.colored("Critical Level", "red", attrs=['bold']) + '\n') #land on this location
                 abort = input('\n>> Abort Mission? [Y/N] -> ').upper() #user decision
                 return abort
+            return weightedCluster
     
     log2Terminal = checkValues() #calling function and running script (terminal output)
+    print(log2Terminal)
+
     time.sleep(1) #delay = 1s (approximately a real drone response rating)
     print('\n','.'*37,'\n')
     if log2Terminal == 'Y':
