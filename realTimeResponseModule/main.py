@@ -1,5 +1,5 @@
 # Main libraries
-import anomalyDetection,clustering,loadData
+import anomalyDetection,clustering,loadData,NoiseGenerator #user libraries
 import numpy as np
 import pandas as pd
 import colorama;colorama.init(autoreset=True)
