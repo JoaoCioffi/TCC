@@ -1,5 +1,5 @@
 # Main libraries
-import anomalyDetection,clustering,loadData
+import anomalyDetection,clustering,loadData,NoiseGenerator #user libraries
 import numpy as np
 import pandas as pd
 import colorama;colorama.init(autoreset=True)
@@ -31,7 +31,7 @@ print(f'\n>> Loaded Clustering Module in {round((end_2-start_2),3)} seconds.\n')
 #____________// VALIDATION //____________#
 # test data (can be editable):
 testData,statistics = loadData.loadData(printColumnNames=True)
-testData = testData.sample(frac=1).reset_index(drop=True).tail(60) #shuffling data and searching for the 30 last individuals
+testData = testData.sample(frac=1).reset_index(drop=True).tail(2) #shuffling data and searching for the 30 last individuals
 print(f'\n>> Input data for validation:\n{testData.head()}\n\n>> Statistics:\n{pd.DataFrame(statistics)}\n')
 
 # checking for anomalies (can be editable cautiously):
@@ -263,3 +263,34 @@ for r in range(anomalyDetectionInput.shape[0]): #rows
 
 endMain = time.time()
 print(f'\n>> Time elapsed is {round((endMain-startMain),3)} seconds.\n   End of execution.\n')
+
+
+class Copyrights:
+  def __init__(self, title="'Autonomous Flight Planning System Using Artificial Intelligence'",
+                     author='João Cioffi', 
+                     institution='UNESP-SJBV',
+                     department='Aeronautical Engineering',
+                     year='2022',
+                     prt=True):
+    self.title = title
+    self.author = author
+    self.institution = institution
+    self.department = department
+    self.year = year
+    self.prt = prt
+    
+    def printCpr(self=self):
+        if self.prt == True:
+            print('\n~ Copyrights ® ~')
+            print(f'Title: {self.title}')
+            print(f'Author: {self.author}')
+            print(f'Institution: {self.institution}')
+            print(f'Department: {self.department}')
+            print(f'\nAll rights reserved, {self.year}')
+        else:
+            pass
+        return ' '
+
+    print(printCpr())
+
+print(Copyrights(prt=True))
