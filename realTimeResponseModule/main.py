@@ -237,7 +237,7 @@ for r in range(anomalyDetectionInput.shape[0]): #rows
             
 
             print(f'\n>> Individuals:\n{pd.DataFrame(sequential)}')
-            if weightedCluster[0] == ' ':
+            if weightedCluster[0] == 'ok':
                 print('\nWeighted Cluster: ' + termcolor.colored("Normal Level", "green", attrs=['bold']) + '\n') #keep flying
             elif weightedCluster[0] == 'mild':
                 print('\nWeighted Cluster: ' + termcolor.colored("Mild Level", "blue", attrs=['bold']) + '\n') #keep flying cautiously
