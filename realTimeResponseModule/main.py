@@ -30,8 +30,10 @@ print(f'\n>> Loaded Clustering Module in {round((end_2-start_2),3)} seconds.\n')
 
 #____________// VALIDATION //____________#
 # test data (can be editable):
-testData,statistics = loadData.loadData(printColumnNames=True)
-testData = testData.sample(frac=1).reset_index(drop=True).tail(2) #shuffling data and searching for the 30 last individuals
+testData,statistics = loadData.loadData(printColumnNames=True) #loading main dataframe
+testData = NoiseGenerator.oneCosineGust(print=False) #generates noise over data (gust)
+
+testData = testData.sample(frac=1).reset_index(drop=True).tail(30) #shuffling data and searching for the 30 last individuals
 print(f'\n>> Input data for validation:\n{testData.head()}\n\n>> Statistics:\n{pd.DataFrame(statistics)}\n')
 
 # checking for anomalies (can be editable cautiously):
