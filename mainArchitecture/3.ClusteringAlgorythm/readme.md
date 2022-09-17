@@ -1,4 +1,4 @@
-### We expect that this method will be able to subdivide our anomalies (previously detected) into 3 major clusters
+### We expect that this method will be able to subdivide our anomalies (previously detected) into as the following:
 
 - 🟢 `OK` -> normal data. If true, then the algorythm will be able to keep the mission active;
 - 🔵 `Mild Level` -> keep flying cautiously;
