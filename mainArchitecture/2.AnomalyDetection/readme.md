@@ -44,3 +44,10 @@ Data Acquisition: using PX4 Firmware integrated to Gazebo + QGroundControl GUI:
 - `wget https://s3-us-west-2.amazonaws.com/qgroundcontrol/latest/QGroundControl.AppImage`
 - `chmod +x ./QGroundControl.AppImage`
 - Run `./QGroundControl.AppImage`
+
+## 5. PX4 Firmware
+- `git clone http://github.com/PX4/Firmware`
+- `cd Firmware`
+- `make`
+- `bash ./Tools/setup/ubuntu.sh`
+- `sudo make px4_sitl gazebo`
