@@ -2,7 +2,7 @@
 
 ![image](https://user-images.githubusercontent.com/60454486/190665185-387f5ec5-795f-482a-985d-959c694cb27f.png)
 
-# 🧠 About TCC ✈
+# About TCC
 
 1. General:
     - This repository content is related to my Graduation's Final Paper
