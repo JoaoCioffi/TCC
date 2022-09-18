@@ -45,7 +45,7 @@ Data Acquisition: using PX4 Firmware integrated to Gazebo + QGroundControl GUI:
 - `chmod +x ./QGroundControl.AppImage`
 - Run `./QGroundControl.AppImage`
 
-## 5. PX4 Firmware 
+## 5. PX4 Firmware 🚁
 - `git clone http://github.com/PX4/Firmware`
 - `cd Firmware`
 - `make`
