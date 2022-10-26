@@ -13,8 +13,7 @@ def oneCosineGust(filename='rawData.csv',path=filesPath,print=True):
     data = pd.read_csv(filename,sep=";")[['roll','pitch','heading','rollRate',
                                           'pitchRate','yawRate','groundSpeed',
                                           'climbRate','altitudeRelative','throttlePct']] # we must NEVER change this! 
-    dataraw=data.copy()                                                                                     # (those were the models' dependencies during the previous fitting steps)
-    
+                                                                                         # (those were the models' dependencies during the previous fitting steps)
     time = [] # time to be appended (in seconds)
     for t in range(0,len(data)):
         time.append(t)
@@ -35,15 +34,18 @@ def oneCosineGust(filename='rawData.csv',path=filesPath,print=True):
         plt.ylabel('climbRate [m/s]')
         plt.legend(('Data without noise','Gust effect'),loc='upper left')
         plt.show()
+    
+    def noisyData(data=data,colName='',xi=1.,xf=50.):
+        noiseModel = np.pi*np.arctan(random.uniform(xi,xf))
+        response = noiseModel*data[colName]
+        return response
 
     data['climbRate'] = data['wg']
-    data['roll'] = np.pi*np.arctan(random.uniform(1.,50.))*data['roll']
-    data['pitch'] = np.pi*np.arctan(random.uniform(1.,50.))*data['pitch']
-    data['rollRate'] = np.pi*np.arctan(random.uniform(1.,50.))*data['rollRate']
-    data['pitchRate'] = np.pi*np.arctan(random.uniform(1.,50.))*data['pitchRate']
-    data['yawRate'] = np.pi*np.arctan(random.uniform(1.,50.))*data['yawRate']
-    data['groundSpeed'] = np.pi*np.arctan(random.uniform(1.,50.))*data['groundSpeed']
+    data['roll'] = noisyData(data,'roll')
+    data['pitch'] = noisyData(data,'pitch')
+    data['rollRate'] = noisyData(data,'rollRate')
+    data['pitchRate'] = noisyData(data,'pitchRate')
+    data['yawRate'] = noisyData(data,'yawRate')
+    data['groundSpeed'] = noisyData(data,'groundSpeed')
     
     return data.drop(['wg','time'],axis=1)
-
-# print(oneCosineGust())
