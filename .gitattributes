@@ -1,5 +1,9 @@
-*.py linguist-language=py
-*.py linguist-detectable=true
+# *.py linguist-language=py
+# *.py linguist-detectable=true
 
-*.ipynb linguist-language=py
-*.ipynb linguist-detectable=true
+# *.ipynb linguist-language=py
+# *.ipynb linguist-detectable=true
+
+*.ipynb linguist-language=Jupyter Notebook
+*.py linguist-language=Python
+*.cpp linguist-language=C++
