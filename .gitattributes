@@ -1,2 +1,5 @@
 *.py linguist-language=py
 *.py linguist-detectable=true
+
+*.ipynb linguist-language=py
+*.ipynb linguist-detectable=true
