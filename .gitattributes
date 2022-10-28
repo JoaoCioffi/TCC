@@ -1,3 +1,3 @@
-*.ipynb linguist-language=JupyterNotebook
+*.ipynb linguist-language='Jupyter Notebook'
 *.py linguist-language=Python
 *.cpp linguist-language=C++
