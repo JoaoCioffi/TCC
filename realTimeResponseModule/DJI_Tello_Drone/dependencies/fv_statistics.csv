@@ -1,0 +1,11 @@
+flight_variables,avg,std
+roll,0.053290,4.805201
+pitch,-0.250340,8.521218
+heading,157.156421,173.673083
+rollRate,0.024987,7.385070
+pitchRate,0.212036,8.341805
+yawRate,0.042293,10.646332
+groundSpeed,3.158141,1.940292
+climbRate,-0.014987,0.418154
+altitudeRelative,12.836437,4.605824
+throttlePct,68.796744,11.678028

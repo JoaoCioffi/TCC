@@ -1,6 +1,7 @@
 """
 This file is based on a StackOverflow post by @301_Moved_Permanently.
 See https://stackoverflow.com/a/50622643
+
 The code was adapted to be able to wrap all methods of a class by simply
 adding the decorator to the class itself.
 """
