@@ -1,3 +1,4 @@
+*.ipynb linguist-language=Jupyter Notebook
 *.py linguist-language=Python
 *.cpp linguist-language=C++
 *.xml linguistic-language=XML
