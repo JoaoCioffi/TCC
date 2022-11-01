@@ -14,14 +14,13 @@ class Missions():
         start = time.time()
 
         missionObject = {
-                            "drone":Tello(),
                             "flight_statistics":constants.loadStatistics(),
                             "rot_clk":[270,180], #rotates clockwise [dg]
                             "rot_count_clk":[90], #rotates counter-clockwise [dg]
                             "move_fwd":[55] #moves forward [cm]
                         }
 
-        drone = missionObject["drone"]
+        drone = Tello()
         statistics = missionObject["flight_statistics"]
 
         #-----------------------#
@@ -34,6 +33,7 @@ class Missions():
         
         print("\n>> Starting takeoff...")
         drone.takeoff()
+        drone.move_up(70)
 
         #-----------------------#
         # ROTATION:
@@ -113,6 +113,7 @@ class Missions():
         print(">> Landing...")
         
         drone.query_battery()
+        drone.move_down(70)
         drone.land()
 
         #-----------------------#
