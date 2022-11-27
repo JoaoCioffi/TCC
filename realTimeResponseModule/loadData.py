@@ -5,7 +5,7 @@ absPath = os.path.dirname(__file__)
 relPath = "dependencies"
 filesPath = os.path.join(absPath,relPath)
 
-def loadData(filename='rawData.csv',path=filesPath,printColumnNames=False):
+def loadData(filename='RawData.csv',path=filesPath,printColumnNames=False):
     os.chdir(filesPath)
     data = pd.read_csv(filename,sep=";")[['roll','pitch','heading','rollRate',
                                           'pitchRate','yawRate','groundSpeed',
