@@ -56,7 +56,7 @@ for r in range(anomalyDetectionInput.shape[0]): #rows
                                  anomalyDetectionInput[r][2]
 
     inputArray = np.array([[rollRate,pitchRate,yawRate]])
-    print(f'\n* rollRate:{rollRate}dg/sec\n* pitchRate:{pitchRate}dg/sec\n* yawRate:{yawRate}dg/sec\n')
+    print(f'\n* rollRate:{round(rollRate,3)}dg/sec\n* pitchRate:{round(pitchRate,3)}dg/sec\n* yawRate:{round(yawRate,3)}dg/sec\n')
 
     def checkValues(inputArray=inputArray):
         anomalyResult = module1.predict(inputArray) #loaded model prediction (anomaly classification)
@@ -72,12 +72,12 @@ for r in range(anomalyDetectionInput.shape[0]): #rows
             inputList = [] # will append the current flight data (all of them)
             for c in range(clusteringInput.shape[1]): #columns
                 inputList.append(clusteringInput[r][c])
-            print(f'\n* roll:{inputList[0]}dg\n* pitch:{inputList[1]}dg\n* heading:{inputList[2]}dg\n* rollRate:{inputList[3]}dg/s\n* pitchRate:{inputList[4]}dg/s\n* yawRate:{inputList[5]}dg/s\n* groundSpeed:{inputList[6]}m/s\n* climbRate:{inputList[7]}m/s\n* altitudeRelative:{inputList[8]}m\n* throttlePct:{inputList[9]}%')
+            print(f'\n* roll:{round(inputList[0],3)}dg\n* pitch:{round(inputList[1],3)}dg\n* heading:{round(inputList[2],3)}dg\n* rollRate:{round(inputList[3],3)}dg/s\n* pitchRate:{round(inputList[4],3)}dg/s\n* yawRate:{round(inputList[5],3)}dg/s\n* groundSpeed:{round(inputList[6],3)}m/s\n* climbRate:{round(inputList[7],3)}m/s\n* altitudeRelative:{round(inputList[8],3)}m\n* throttlePct:{round(inputList[9],3)}%')
             
             inputArray = np.array([inputList])
 
             clusteringResult = module2.predict(inputArray) #loaded model prediction (anomaly clustering)
-            print(f'\n>> Main Cluster (KNN):{clusteringResult}')
+            print(f'\n>> Main Cluster (k-Means):{clusteringResult}')
 
             # For each 3 sequential candidates, we need to get a Weighted Cluster to take our real-time decision
             sequential = {'roll':[],
