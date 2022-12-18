@@ -257,7 +257,7 @@ for r in range(anomalyDetectionInput.shape[0]): #rows
     time.sleep(1) #delay = 1s (approximately a real drone response rating)
     print('\n','.'*37,'\n')
     if log2Terminal == 'Y':
-        print(Fore.BLACK + Back.YELLOW + "\nAborted Mission!")
+        print(Fore.BLACK + Back.YELLOW + "Aborted Mission!")
         print(Style.RESET_ALL)
         break
     else:

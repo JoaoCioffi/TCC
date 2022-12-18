@@ -21,15 +21,15 @@ print('\n>> Please, fill the requested data with the current METAR variables:')
 
 ## 1. Numeric Variables
 print('\n~ NUMERIC VARIABLES ~\n')
-tmpf = input('* Air Temperature in Farenheint -> ')
-dwpf = input('* Dew Point Temperature in Fahrenheit -> ')
-relh = input('* Relative Humidity in % -> ')
-drct = input('* Wind Direction in degrees from true north -> ')
-sknt = input('* Wind Speed in knots -> ')
-alti = input('* Pressure altimeter in inches/Hg -> ')
-vsby = input('* Visibility in miles -> ')
-skyl1 = input('* Sky Level 1 Coverage -> ')
-feel = input('* Apparent Temperature (Wind Chill or Heat Index) in Fahrenheit -> ')
+tmpf = input('* Air Temperature [°F] -> ')
+dwpf = input('* Dew Point Temperature [°F] -> ')
+relh = input('* Relative Humidity [%] -> ')
+drct = input('* Wind Direction [dg] -> ')
+sknt = input('* Wind Speed [knots] -> ')
+alti = input('* Pressure altimeter [inHg] -> ')
+vsby = input('* Visibility [miles] -> ')
+skyl1 = input('* Sky Level 1 Coverage [ft] -> ')
+feel = input('* Apparent Temperature [°F] -> ')
 entries = (tmpf,dwpf,relh,drct,sknt,alti,vsby,skyl1,feel)
 try:
     float_converted = []
@@ -161,16 +161,16 @@ else:
 print('\n* Current Season Code\n1-SUMMER\n2-AUTUMN\n3-WINTER\n4-SPRING')
 Season = input('Insert Season Code -> ')
 if(Season == '1'):
-    print('Selected season: 1')
+    print('Selected season: SUMMER')
     season_flag_summer, season_flag_autumn, season_flag_winter, season_flag_spring = 1,0,0,0
 elif(Season == '2'):
-    print('Selected season: 2')
+    print('Selected season: AUTUMN')
     season_flag_summer, season_flag_autumn, season_flag_winter, season_flag_spring = 0,1,0,0
 elif(Season == '3'):
-    print('Selected season: 3')
+    print('Selected season: WINTER')
     season_flag_summer, season_flag_autumn, season_flag_winter, season_flag_spring = 0,0,1,0
 elif(Season == '4'):
-    print('Selected season: 4')
+    print('Selected season: SPRING')
     season_flag_summer, season_flag_autumn, season_flag_winter, season_flag_spring = 0,0,0,1
 else:
     print('Invalid Entry! Cannot authenticate as a model input...')
@@ -209,7 +209,7 @@ print('\n>> Starting Prediction...')
 y_pred = reg_model.predict(arr)
 time.sleep(1)
 
-print(f"Results: tmpf={round(y_pred.item(0),3)}°F | relh={round(y_pred.item(1),3)}% | sknt={round(y_pred.item(2),3)}knots | alti={round(y_pred.item(3),3)}mmHg | vsby={round(y_pred.item(4),3)}miles | skyl1={round(y_pred.item(5),3)}ft")
+print(f"Results: tmpf={round(y_pred.item(0),3)}°F | relh={round(y_pred.item(1),3)}% | sknt={round(y_pred.item(2),3)}knots | alti={round(y_pred.item(3),3)}inHg | vsby={round(y_pred.item(4),3)}miles | skyl1={round(y_pred.item(5),3)}ft")
 
 
 #____________// END //____________#
