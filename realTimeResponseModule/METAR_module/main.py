@@ -209,7 +209,7 @@ print('\n>> Starting Prediction...')
 y_pred = reg_model.predict(arr)
 time.sleep(1)
 
-print(f"Results: tmpf={round(y_pred.item(0),3)} | relh={round(y_pred.item(1),3)} | sknt={round(y_pred.item(2),3)} | alti={round(y_pred.item(3),3)} | vsby={round(y_pred.item(4),3)} | skyl1={round(y_pred.item(5),3)}")
+print(f"Results: tmpf={round(y_pred.item(0),3)}°F | relh={round(y_pred.item(1),3)}% | sknt={round(y_pred.item(2),3)}knots | alti={round(y_pred.item(3),3)}mmHg | vsby={round(y_pred.item(4),3)}miles | skyl1={round(y_pred.item(5),3)}ft")
 
 
 #____________// END //____________#
