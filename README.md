@@ -2,6 +2,116 @@
 
 ![image](https://user-images.githubusercontent.com/60454486/207338037-10568815-161a-4f4b-9d22-4746c5dccde0.png)
 
+Current Project Tree:
+``` 
+.
+├── cioffi_jr_tcc_sjbv.pdf
+├── flowchart.png
+├── mainArchitecture
+│   ├── 1.WeatherForecasting
+│   │   ├── METAR_TCC
+│   │   │   ├── Data
+│   │   │   │   └── SBRP.csv
+│   │   │   ├── readme.md
+│   │   │   ├── Scripts
+│   │   │   │   ├── JupyterNotebook
+│   │   │   │   │   ├── Metar_Predictor.ipynb
+│   │   │   │   │   └── SBRP.csv
+│   │   │   │   └── Metar_Predictor.py
+│   │   │   └── SystemOutput
+│   │   │       ├── METAR.joblib
+│   │   │       └── tree
+│   │   └── Readme.md
+│   ├── 2.AnomalyDetection
+│   │   ├── Data
+│   │   │   ├── LSTM_output.csv
+│   │   │   └── RawData.csv
+│   │   ├── ExportedModels_Joblib
+│   │   │   ├── anomalyDetector.joblib
+│   │   │   └── LSTM.joblib
+│   │   ├── readme.md
+│   │   ├── ROS_Fundamentals
+│   │   │   ├── CMakeLists.txt
+│   │   │   ├── hello.cpp
+│   │   │   ├── package.xml
+│   │   │   └── pubvel.cpp
+│   │   └── Scripts
+│   │       ├── 2_anomalydetection_lstm.py
+│   │       └── JupyterNotebook
+│   │           ├── 2_AnomalyDetection_LSTM.ipynb
+│   │           └── postProcessing
+│   │               ├── LSTM_output.csv
+│   │               └── postProcessing.ipynb
+│   └── 3.ClusteringAlgorythm
+│       ├── Data
+│       │   └── LSTM_output.csv
+│       ├── ExportedModels_Joblib
+│       │   └── clusters.joblib
+│       ├── readme.md
+│       └── Scripts
+│           └── JupyterNotebook
+│               └── KMeans_Clustering
+│                   ├── KMeans_Clustering.ipynb
+│                   └── LSTM_output.csv
+├── pip_dependencies
+│   └── dependencies.txt
+├── projectTree.txt
+├── README.md
+├── realTimeResponseModule
+│   ├── anomalyDetection.py
+│   ├── clustering.py
+│   ├── dependencies
+│   │   ├── anomalyDetector.joblib
+│   │   ├── clusters.joblib
+│   │   └── rawData.csv
+│   ├── DJI_Tello_Drone
+│   │   ├── constants.py
+│   │   ├── dependencies
+│   │   │   ├── bckp
+│   │   │   │   ├── enforce_types.py
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── __pycache__
+│   │   │   │   │   ├── enforce_types.cpython-38.pyc
+│   │   │   │   │   ├── __init__.cpython-38.pyc
+│   │   │   │   │   ├── swarm.cpython-38.pyc
+│   │   │   │   │   └── tello.cpython-38.pyc
+│   │   │   │   ├── swarm.py
+│   │   │   │   └── tello.py
+│   │   │   ├── fv_statistics.csv
+│   │   │   └── readme.txt
+│   │   ├── main.py
+│   │   ├── missions.py
+│   │   ├── __pycache__
+│   │   │   ├── constants.cpython-38.pyc
+│   │   │   └── missions.cpython-38.pyc
+│   │   ├── README.md
+│   │   └── Tello SDK Documentation EN_1.3_1122.pdf
+│   ├── loadData.py
+│   ├── main.py
+│   ├── METAR_module
+│   │   ├── dependencies
+│   │   │   └── GradientBooster.pkl
+│   │   ├── main.py
+│   │   ├── predictor.py
+│   │   ├── __pycache__
+│   │   │   └── predictor.cpython-310.pyc
+│   │   └── relations.pdf
+│   ├── NoiseGenerator.py
+│   ├── __pycache__
+│   │   ├── anomalyDetection.cpython-310.pyc
+│   │   ├── anomalyDetection.cpython-38.pyc
+│   │   ├── clustering.cpython-310.pyc
+│   │   ├── clustering.cpython-38.pyc
+│   │   ├── loadData.cpython-310.pyc
+│   │   ├── loadData.cpython-38.pyc
+│   │   ├── NoiseGenerator.cpython-310.pyc
+│   │   └── NoiseGenerator.cpython-38.pyc
+│   └── README.md
+└── SECURITY.md
+
+32 directories, 70 files
+```
+
 # About TCC
 
 1. General:
