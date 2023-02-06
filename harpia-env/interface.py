@@ -26,9 +26,11 @@ def GUI():
             # (sugiro que o arquivo a ser lido siga o mesmo padrão, incluindo a ordem das colunas, que é o mesmo formato de log gerado do simulador, com as mesmas variáveis)
             testData = pd.read_csv(filePath,sep=";").sample(n=1).reset_index(drop=True)
             anomalyDetectionInput = testData[['rollRate','pitchRate','yawRate']].values
-            clusteringInput = testData.values
+            clusteringInput = testData[['roll','pitch','heading',
+                                        'rollRate','pitchRate','yawRate',
+                                        'groundSpeed','climbRate','altitudeRelative','throttlePct']].values
 
-            print(f'\nArquivo Carregado (csv):\n{testData}\n')
+            print(f'\nLoaded File Content (.csv):\n{testData}\n')
 
             # iterando sobre o conteúdo do arquivo
             for r in range(anomalyDetectionInput.shape[0]): # linhas
@@ -36,7 +38,7 @@ def GUI():
                                              anomalyDetectionInput[r][1],\
                                              anomalyDetectionInput[r][2]
 
-                print(f'\n* rollRate:{round(rollRate,3)}dg/sec\n* pitchRate:{round(pitchRate,3)}dg/sec\n* yawRate:{round(yawRate,3)}dg/sec\n')
+                print(f'\nAnomaly Detection Input: {anomalyDetectionInput}\n')
 
                 # verificando anomalias
                 inputArray = np.array([[rollRate,pitchRate,yawRate]])
@@ -44,11 +46,11 @@ def GUI():
                 if anomalyResult[0] == 0:
                     displayData("Normal Pattern")
                 else:
+                    print(f'\nClustering Input: {clusteringInput}\n')
                     displayData("Found Anomalous Pattern! Starting clustering...")
                     inputList=[] # lista para armazenar as demais variáveis de voo
                     for c in range(clusteringInput.shape[1]): # colunas
                         inputList.append(clusteringInput[r][c])
-                        print(f'\n* roll:{round(inputList[0],3)}dg\n* pitch:{round(inputList[1],3)}dg\n* heading:{round(inputList[2],3)}dg\n* rollRate:{round(inputList[3],3)}dg/s\n* pitchRate:{round(inputList[4],3)}dg/s\n* yawRate:{round(inputList[5],3)}dg/s\n* groundSpeed:{round(inputList[6],3)}m/s\n* climbRate:{round(inputList[7],3)}m/s\n* altitudeRelative:{round(inputList[8],3)}m\n* throttlePct:{round(inputList[9],3)}%')
 
                         inputArray = np.array([inputList])
                         clusteringResult = module2.predict(inputArray)
